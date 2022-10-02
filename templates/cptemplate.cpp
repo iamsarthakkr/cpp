@@ -29,10 +29,8 @@ int main() {
 	ios::sync_with_stdio(0);cin.tie(NULL);cout.tie(NULL);
 	cout << setprecision(12) << fixed;
 #ifdef SARTHAK_LOCAL
-    freopen("./input.txt", "r", stdin); freopen("./output.txt", "w", stdout);
+   freopen("./input.txt", "r", stdin); freopen("./output.txt", "w", stdout);
 #endif
-
-	
 
 	int tt = 1;
 	if (MULTI) cin >> tt;
