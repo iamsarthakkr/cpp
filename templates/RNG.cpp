@@ -3,6 +3,8 @@
 
 namespace Random {
 	std::mt19937_64 rng(std::chrono::steady_clock::now().time_since_epoch().count());
+   // std::mt19937_64 rng(696969);
+
 
 	long long nextLongLong() {
 		return rng();
@@ -17,7 +19,7 @@ namespace Random {
 	}
 
 	int nextInt() {
-		return nextLongLong()%INT32_MAX;
+		return (int)nextLongLong()%INT32_MAX;
 	}
 
 	int nextInt(int x) {
@@ -25,7 +27,7 @@ namespace Random {
 	}
 
 	int nextInt(int a, int b) {
-		return nextLongLong(a, b);
+		return (int)nextLongLong(a, b);
 	}
 
 	bool nextBoolean() {
