@@ -6,7 +6,7 @@ typedef unsigned long long ull;
 typedef long double lld;
 
 #ifdef SARTHAK_LOCAL
-#include "/Users/sarthakkumar/cpp/templates/debug.cpp"
+#include "/Users/sarthakkumar/cpp/templates/CompCoding/debug.cpp"
 #else 
 #define debug(...) 69
 #endif
