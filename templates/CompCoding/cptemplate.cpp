@@ -19,16 +19,15 @@ mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count());
 
 #define MULTI 1	// 0 for single test case
 
-
 void Main() {
 
 }
-
 
 int main() {
 	ios::sync_with_stdio(0);cin.tie(NULL);cout.tie(NULL);
 	cout << setprecision(12) << fixed;
 #ifdef SARTHAK_LOCAL
+   clock_t start = clock();
    freopen("./input.txt", "r", stdin); freopen("./output.txt", "w", stdout);
 #endif
 
@@ -41,7 +40,7 @@ int main() {
 	}
 
 #ifdef SARTHAK_LOCAL
-   cerr << "Total Time: " << clock() / CLOCKS_PER_SEC << "s" << '\n';
+   cerr << "Total Time: " << (start - clock()) / (1000) << "ms" << '\n';
 #endif
    return 0;
 }
