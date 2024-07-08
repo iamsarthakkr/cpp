@@ -1,10 +1,11 @@
 #include <vector>
-struct DSU {
+
+struct DisjontSet {
 	std::vector<int> p;
 	std::vector<int> size;
 	int sz;
 
-	DSU(int n) :sz(n) {
+	DisjontSet(int n) :sz(n) {
 		p.resize(n + 1); size.resize(n + 1);
 		for (int i = 1; i <= n; i++) {
 			p[i] = i; size[i] = 1;

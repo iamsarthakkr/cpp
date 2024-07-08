@@ -14,7 +14,7 @@ string to_string(const array<T, sz>& a) {
 	return res;
 }
 
-string to_string(bool b) {
+string to_string(const bool& b) {
 	return (b ? "True" : "False");
 }
 

@@ -1,4 +1,5 @@
 #include<bits/stdc++.h>
+
 namespace NumberTheory {
 	long long m_size = 0;
 	std::vector<bool> is_prime;
