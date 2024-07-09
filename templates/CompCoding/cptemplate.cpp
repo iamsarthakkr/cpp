@@ -7,7 +7,9 @@ typedef long double lld;
 typedef pair<int, int> pii;
 typedef pair<long long, long long> pll;
 typedef vector<int> vi;
+typedef vector<ll> vll;
 typedef vector<vi> vvi;
+typedef vector<vll> vvll;
 typedef vector<pii> vpii;
 typedef vector<pll> vpll;
 
