@@ -58,7 +58,6 @@ int main() {
 	cout << setprecision(12) << fixed;
 #ifdef SARTHAK_LOCAL
    clock_t start = clock();
-   freopen("./input.txt", "r", stdin); freopen("./output.txt", "w", stdout);
 #endif
 
 	int tt = 1;
@@ -67,10 +66,14 @@ int main() {
 	for(int test_case = 1; test_case <= tt; test_case++) {
 		debug(test_case);
 		Main();
+      #ifdef SARTHAK_LOCAL
+         cerr << "----------------------------------------------------------------------------------------------------------------------------------------" << '\n';
+      #endif
 	}
 
 #ifdef SARTHAK_LOCAL
-   cerr << "Total Time: " << (start - clock()) * (1e3) / CLOCKS_PER_SEC << "ms" << '\n';
+   clock_t end = clock();
+   cerr << "Total Time: " << (double)(end - start) * 1e3 / CLOCKS_PER_SEC << "ms" << '\n';
 #endif
    return 0;
 }
