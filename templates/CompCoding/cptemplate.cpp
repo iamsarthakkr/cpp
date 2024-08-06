@@ -65,7 +65,11 @@ int main() {
 
 	for(int test_case = 1; test_case <= tt; test_case++) {
 		debug(test_case);
+
 		Main();
+      // cout << Main() << '\n';
+      // cout << (Main() ? "YES" : "NO") << '\n';
+
       #ifdef SARTHAK_LOCAL
          cerr << "----------------------------------------------------------------------------------------------------------------------------------------" << '\n';
       #endif
