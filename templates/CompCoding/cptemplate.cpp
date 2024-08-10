@@ -51,7 +51,7 @@ void Main() {
 
 }
 
-#define MULTI 1	// 0 for single test case
+#define MULTI // comment for single test case
 
 int main() {
 	ios::sync_with_stdio(0);cin.tie(NULL);cout.tie(NULL);
@@ -61,7 +61,9 @@ int main() {
 #endif
 
 	int tt = 1;
-	if (MULTI) cin >> tt;
+   #ifdef MULTI
+      cin >> tt;
+   #endif
 
 	for(int test_case = 1; test_case <= tt; test_case++) {
 		debug(test_case);
