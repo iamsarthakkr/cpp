@@ -27,6 +27,7 @@ typedef vector<pll> vpll;
 #define forr(i, l, r) for(int i = l; i <= r; i++)
 #define forrd(i, l, r) for(int i = r; i >= l; i--)
 #define all(a) (a).begin(), (a).end()
+#define rall(a) (a).rbegin(), (a).rend()
 #define len(a) (int)(a).size()
 
 #ifdef SARTHAK_LOCAL
