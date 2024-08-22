@@ -42,5 +42,48 @@ namespace NumberTheory {
 		if(divs.size()) std::sort(divs.begin(), divs.end());
 		return divs;
 	}
+
+    long long binpower(long long base, long long e, long long mod) {
+    long long result = 1;
+    base %= mod;
+    while (e) {
+        if (e & 1)
+            result = (__int128_t)result * base % mod;
+        base = (__int128_t)base * base % mod;
+        e >>= 1;
+    }
+    return result;
+}
+
+    bool check_composite(long long n, long long a, long long d, int s) {
+    long long x = binpower(a, d, n);
+    if (x == 1 || x == n - 1)
+        return false;
+    for (int r = 1; r < s; r++) {
+        x = (__int128_t)x * x % n;
+        if (x == n - 1)
+            return false;
+    }
+    return true;
+    };
+
+    bool MillerRabin(long long n, int iter=5) { // returns true if n is probably prime, else returns false.
+        if (n < 4)
+            return n == 2 || n == 3;
+
+        int s = 0;
+        long long d = n - 1;
+        while ((d & 1) == 0) {
+            d >>= 1;
+            s++;
+        }
+
+        for (int i = 0; i < iter; i++) {
+            int a = 2 + rand() % (n - 3);
+            if (check_composite(n, a, d, s))
+                return false;
+        }
+        return true;
+    }
 }
 using namespace NumberTheory;

@@ -1,5 +1,25 @@
+string to_string(const bool& b);
+
+string to_string(const char* s);
+
+string to_string(const char& c);
+
+string to_string(const string& str);
+
 template <typename A, typename B>
-string to_string(pair<A, B> p);
+string to_string(const pair<A, B>& p);
+
+template <typename T>
+string to_string(const vector<T>& a);
+
+template<size_t t>
+string to_string(const bitset<t>& a);
+
+template <typename A>
+string to_string(const A& a);
+
+template <typename T, size_t sz>
+string to_string(const array<T, sz>& a);
 
 template <typename T, size_t sz>
 string to_string(const array<T, sz>& a) {
@@ -35,7 +55,7 @@ string to_string(const char* s) {
 }
 
 template<size_t t>
-string to_string(bitset<t> a) {
+string to_string(const bitset<t>& a) {
    string res = "";
 	for (int i = 0; i < (int)t; i++) {
       res += a[i] ? "1" : "0";
@@ -44,7 +64,7 @@ string to_string(bitset<t> a) {
 }
 
 template <typename T>
-string to_string(vector<T>& a) {
+string to_string(const vector<T>& a) {
 	string res = "{";
 	bool first = true;
 	for (int i = 0; i < (int)a.size(); i++) {
@@ -57,7 +77,7 @@ string to_string(vector<T>& a) {
 }
 
 template <typename A>
-string to_string(A a) {
+string to_string(const A& a) {
 	string res = "{";
 	bool first = true;
 	for (const auto& x : a) {
@@ -70,7 +90,7 @@ string to_string(A a) {
 }
 
 template <typename A, typename B>
-string to_string(pair<A, B> p) {
+string to_string(const pair<A, B>& p) {
 	return '(' + to_string(p.first) + ", " + to_string(p.second) + ")";
 }
 
