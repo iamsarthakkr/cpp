@@ -58,14 +58,15 @@ T gcd(T a, T b) {
 mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count());
 // mt19937_64 rng(696969);
 
-void Main() {
+void Main(int tc) {
 
 }
 
 #define MULTI	// comment for single test
 
 int main() {
-	ios::sync_with_stdio(0);cin.tie(NULL);cout.tie(NULL); cout << setprecision(12) << fixed;
+	ios::sync_with_stdio(0);cin.tie(NULL); cout << setprecision(12) << fixed;
+    
 	int tt = 1;
 	#ifdef MULTI 
 		cin >> tt;
@@ -73,11 +74,10 @@ int main() {
 
     for(int t = 1; t <= tt; t++) {
         #ifdef SARTHAK_LOCAL
-            cerr << "Test Case: #" << t << '\n';
-            cerr << "---------------" << '\n';
+            cerr << "Test Case: #" << t << '\n'; cerr << "---------------" << '\n';
         #endif
 
-		Main();
+		Main(t);
         
         #ifdef SARTHAK_LOCAL
             cerr << "---------------" << '\n';
