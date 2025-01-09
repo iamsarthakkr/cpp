@@ -64,9 +64,3 @@ struct segtree {
       sum = left->sum + right->sum;
    }
 };
-
-struct segtree_2d {
-   int upperRow, lowerRow;
-   
-
-}

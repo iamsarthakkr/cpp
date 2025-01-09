@@ -47,14 +47,11 @@ void timeIt() {
 #define debug(...) 69
 #endif
 
-template<typename T> bool cmin(T& a, T b) { return b < a ? a = b, 1 : 0; }
-template<typename T> bool cmax(T& a, T b) { return b > a ? a = b, 1 : 0; }
-
 template<typename T>
 T gcd(T a, T b) { while (b) { a %= b; swap(a, b); } return a; }
 
-mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count());
-// mt19937_64 rng(696969);
+template<typename T> bool cmin(T& a, T b) { return b < a ? a = b, 1 : 0; }
+template<typename T> bool cmax(T& a, T b) { return b > a ? a = b, 1 : 0; }
 
 void Main(int tc) {
 

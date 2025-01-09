@@ -1,3 +1,6 @@
+#include<bits/stdc++.h>
+using namespace std;
+
 string to_string(const bool& b);
 
 string to_string(const char* s);
