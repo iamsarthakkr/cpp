@@ -6,7 +6,7 @@ typedef unsigned long long ull;
 typedef long double lld;
 
 #ifdef SARTHAK_LOCAL
-#include "/Users/sarthakkumar/cpp/templates/debug.cpp"
+#include "/Users/sarthakkumar/cpp/templates/CompCoding/debug.cpp"
 #else 
 #define debug(...) 69
 #endif
@@ -68,44 +68,22 @@ using namespace Random;
 
 
 
-#include "./Segment_Tree_basic.cpp"
+#include "./Modular.cpp"
+
+// using Mint = Modular<10>;
 
 
 int main() {
 	ios::sync_with_stdio(0);cin.tie(NULL);cout.tie(NULL);
 	cout << setprecision(12) << fixed;
 #ifdef SARTHAK_LOCAL
-   // freopen("./output.txt", "w", stdout);
+   clock_t start = clock();
+   // freopen("./input.txt", "r", stdin); freopen("./output.txt", "w", stdout);
 #endif
 
-   int n = 1000;
-   vector<long long> a(n);
-   for(int i = 0; i < n; i++) a[i] = nextInt(100000);
-
-   debug(n, a);
-   cout << a[n + 1];
-   segtree st(0, n, a);
-   
-   for(int q = 0; q < 10000; q++) {
-      if(nextBoolean()) {
-         ll v = nextInt(100000), i = nextInt(n - 1);
-         a[i] = v;
-         st.update(i, v);
-      } else {
-         int l = nextInt(0, n - 1), r = nextInt(0, n - 1);
-         if(l > r) swap(l, r);
-
-         ll s = 0;
-         for(int i = l; i <= r; i++) s += a[i];
-         assert(st.calc(l, r + 1) == s);
-      }
-   }
-
-   cout << "PASSED\n";
-	
-
 #ifdef SARTHAK_LOCAL
-   cerr << "Total Time: " << clock() / CLOCKS_PER_SEC << "s" << '\n';
+   cerr << "Total Time: " << (clock() - start) / (1000) << "ms" << '\n';
+   cerr << "Total Time: " << (clock() - start) / (CLOCKS_PER_SEC) << "s" << '\n';
 #endif
    return 0;
 }

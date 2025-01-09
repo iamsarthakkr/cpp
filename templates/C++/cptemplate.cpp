@@ -25,6 +25,7 @@ typedef vector<pll> vpll;
 #define fi first
 #define se second
 #define forn(i, n) for(int i = 0; i < n; i++)
+#define forv(x, a) for(auto& x: a)
 #define ford(i, n) for(int i = n - 1; i >= 0; i--)
 #define for1(i, n) for(int i = 1; i <= n; i++)
 #define forr(i, l, r) for(int i = l; i <= r; i++)
@@ -36,7 +37,7 @@ typedef vector<pll> vpll;
 
 void timeIt() {
 	#ifdef SARTHAK_LOCAL
-		cerr << "Total Time: " << (double)clock() * 1e3 / CLOCKS_PER_SEC << "ms" << '\n';
+        cerr << "Total Time: " << (double)clock() * 1e3 / CLOCKS_PER_SEC << "ms" << '\n';
 	#endif
 }
 
@@ -50,10 +51,7 @@ template<typename T> bool cmin(T& a, T b) { return b < a ? a = b, 1 : 0; }
 template<typename T> bool cmax(T& a, T b) { return b > a ? a = b, 1 : 0; }
 
 template<typename T>
-T gcd(T a, T b) {
-	while (b) { a %= b; swap(a, b); }
-	return a;
-}
+T gcd(T a, T b) { while (b) { a %= b; swap(a, b); } return a; }
 
 mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count());
 // mt19937_64 rng(696969);
