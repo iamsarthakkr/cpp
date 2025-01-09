@@ -1,27 +1,35 @@
 #include<bits/stdc++.h>
+using namespace std;
 
-namespace NumberTheory {
-	long long m_size = 0;
-	std::vector<bool> is_prime;
+namespace Number_Theory {
+    static bool initialized = false;
 
-	void genPrimes(int N) {
-		m_size = N;
-		is_prime.assign(N + 1, true);
-		is_prime[0] = is_prime[1] = false;
-		for(int x = 0; x * x <= N; x++) {
-			if(is_prime[x]) {
-				for(int y = 2 * x; y <= N; y += x) is_prime[y] = false;
-			}
-		}
-	}
+    static std::vector<bool> prime;
+    static std::vector<int> primes;
 
-	// vector of {Factor, count}
+    void init(int N = 10000000) {
+        prime.assign(N + 1, true);
+
+        prime[0] = prime[1] = false;
+        primes = {};
+
+        for(long long p = 0; p * p <= N; p++) {
+            if(!prime[p]) continue;
+            primes.emplace_back(p);
+            for(long long y = 2 * p; y <= N; y += p) {
+                prime[y] = false;
+            }
+        }
+        initialized = true;
+    }
+
+	// list of { prime_factor, count }
 	std::vector<std::pair<long long, long long>> factors(long long N) {
-		assert(m_size > 0); assert(N >= 0 && m_size * m_size >= N);
+        if(!initialized) init();
 
 		std::vector<std::pair<long long, long long>> facts;
 		for(long long x = 2; x * x <= N; x++) {
-			if(is_prime[x] && N%x == 0) {
+			if(prime[x] && N%x == 0) {
 				long long cnt = 0;
 				while(N > 1 && N%x == 0) N /= x, cnt++;
 				facts.emplace_back(x, cnt);
@@ -47,8 +55,7 @@ namespace NumberTheory {
     long long result = 1;
     base %= mod;
     while (e) {
-        if (e & 1)
-            result = (__int128_t)result * base % mod;
+        if (e & 1) result = (__int128_t)result * base % mod;
         base = (__int128_t)base * base % mod;
         e >>= 1;
     }
@@ -56,20 +63,20 @@ namespace NumberTheory {
 }
 
     bool check_composite(long long n, long long a, long long d, int s) {
-    long long x = binpower(a, d, n);
-    if (x == 1 || x == n - 1)
-        return false;
-    for (int r = 1; r < s; r++) {
-        x = (__int128_t)x * x % n;
-        if (x == n - 1)
+        long long x = binpower(a, d, n);
+        if (x == 1 || x == n - 1)
             return false;
-    }
-    return true;
+        for (int r = 1; r < s; r++) {
+            x = (__int128_t)x * x % n;
+            if (x == n - 1)
+                return false;
+        }
+        return true;
     };
 
     bool MillerRabin(long long n, int iter=5) { // returns true if n is probably prime, else returns false.
-        if (n < 4)
-            return n == 2 || n == 3;
+        static mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count());
+        if (n < 4) return n == 2 || n == 3;
 
         int s = 0;
         long long d = n - 1;
@@ -80,10 +87,9 @@ namespace NumberTheory {
 
         for (int i = 0; i < iter; i++) {
             int a = 2 + rand() % (n - 3);
-            if (check_composite(n, a, d, s))
-                return false;
+            if (check_composite(n, a, d, s)) return false;
         }
         return true;
     }
 }
-using namespace NumberTheory;
+using namespace Number_Theory;
