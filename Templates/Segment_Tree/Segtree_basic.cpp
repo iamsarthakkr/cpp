@@ -1,112 +1,69 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-template<typename Info>
-struct Segtree {
-   int size;
-   vector<Info> tree;
+template<typename Node>
+class SegtreeImpl {
+public:
+    // Initialize with empty values
+    SegtreeImpl(int n) { m_size = 1; while(m_size < n) m_size *= 2; m_tree.assign(2 * m_size, Node()); }
 
-   Segtree(int n) {
-      init(n);
-   }
+    // initialize with list of values
+    template<typename T = Node>
+    SegtreeImpl(vector<T>& info) : SegtreeImpl((int)info.size()) { build<T>(info, 0, 0, m_size); }
 
-   Segtree(vector<Info>& info) {
-      init((int)info.size());
-      this->build(0, 0, size, info);
-   }
+    // set value for a node
+    void set(int i, const Node& v) { setImpl(i, v, 0, 0, m_size); }
 
-   // set operation
-   void set(int node, int lx, int rx, int i, const Info& v) {
-      if(rx - lx == 1) {
-         // leaf
-         tree[node] = v;
-         return;
-      }
-      int m = (lx + rx) >> 1;
-      if(i < m) {
-         set(2 * node + 1, lx, m, i, v);
-      } else {
-         set(2 * node + 2, m, rx, i, v);
-      }
-      recalc(node, lx, rx);
-   }
-   
-   void set(int i, const Info& v) {
-      set(0, 0, size, i, v);
-   }
+    // get value of node i
+    Node get(int i) { return getImpl(i, i + 1, 0, 0, m_size); }
 
-   // calc operation
-   Info calc(int node, int lx, int rx, int l, int r) {
-      // disjoint
-      if(rx <= l || r <= lx) {
-         return Info();
-      }
-      // covered
-      if(l <= lx && rx <= r) {
-         return tree[node];
-      }
-      int m = (lx + rx) >> 1;
-      auto s1 = calc(2 * node + 1, lx, m, l, r);
-      auto s2 = calc(2 * node + 2, m, rx, l, r);
-      return Info::merge(s1, s2);
-   }
-   
-   // function from l...r-1
-   Info calc(int l, int r) {
-      return calc(0, 0, size, l, r);
-   }
+    // get result for range l ... r - 1
+    Node get(int l, int r) { return getImpl(l, r, 0, 0, m_size); }
 
 private:
-   void recalc(int node, int lx, int rx) {
-      if(rx - lx == 1) {
-         return;
-      }
-      Info::unite(tree[node], tree[2 * node + 1], tree[2 * node + 2]);
-   }
+    // set implementation
+    void setImpl(int i, const Node& v, int node, int lx, int rx) {
+        if(rx - lx == 1) { m_tree[node] = v; return; } // leaf node
 
-private: 
-   void init(int n) {
-      size = 1;
-      while(size < n) size *= 2;
-      tree.assign(2 * size, Info());
-   }
+        int m = (lx + rx) >> 1;
+        if(i < m) { setImpl(i, v, 2 * node + 1, lx, m); }
+        else      { setImpl(i, v, 2 * node + 2, m, rx); }
 
-   void build(int node, int lx, int rx, vector<Info>& arr) {
-      if(rx - lx == 1) {
-         // leaf
-         if(lx < (int)arr.size()) {
-            tree[node] = arr[lx];
-         }
-         return;
-      }
-      int m = (lx + rx) >> 1;
-      build(2 * node + 1, lx, m, arr); 
-      build(2 * node + 2, m, rx, arr);
+        recalc(node, lx, rx);
+    }
 
-      recalc(node, lx, rx);
-   }
+    // calc operation
+    Node getImpl(int l, int r, int node, int lx, int rx) {
+        if(rx <= l || r <= lx) { return Node(); } // neutral element
+        if(l <= lx && rx <= r) { return m_tree[node]; } // covered
+
+        int m = (lx + rx) >> 1;
+        auto left = getImpl(l, r, 2 * node + 1, lx, m);
+        auto right = getImpl(l, r, 2 * node + 2, m, rx);
+        return Node::merge(left, right);
+    }
+
+private:
+    template<typename T = Node>
+    void build(const vector<T>& info, int node, int lx, int rx) {
+        if(rx - lx == 1) { // leaf node
+            if(lx < (int) info.size()) { 
+                m_tree[node] = info[lx]; 
+            }
+            return;
+        }
+        int m = (lx + rx) >> 1; build(info, 2 * node + 1, lx, m); build(info, 2 * node + 2, m, rx);
+        recalc(node, lx, rx);
+    }
+
+private:
+    // recalculate value for a node
+    void recalc(int node, int lx, int rx) {
+        if(rx - lx == 1) { return; } // leaf node
+        m_tree[node] = Node::merge(m_tree[2 * node + 1], m_tree[2 * node + 2]);
+    }
+
+private:
+    int m_size;
+    vector<Node> m_tree;
 };
-
-struct Info {
-   int val;
-
-   Info() { // Neutral element
-      val = 0;
-   }
-   
-   Info(int v) { // single
-      val = v;
-   }
-
-   static Info merge(const Info& a, const Info& b) {
-      Info res;
-      unite(res, a, b);
-      return res;
-   }
-
-   static void unite(Info& node, const Info& a, const Info& b) {
-      node.val = a.val + b.val;
-   }
-};
-
-/* usage -> Segtree<Info> st(infos) */
