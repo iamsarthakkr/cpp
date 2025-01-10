@@ -45,15 +45,21 @@ T inverse(T a, T m) {
 }
 
 template<typename VarMod>
-class VarModInt {
+class ModInt {
 public:
     using Type = typename decay<decltype(VarMod::value)>::type;
 
 public:
-    VarModInt(): v(0) {}
+    static void set_mod(const int& md) {
+        assert(md > 0);
+        MOD = md;
+    }
+
+public:
+    ModInt(): v(0) {}
 
     template<typename T>
-    VarModInt(T v_) {
+    ModInt(T v_) {
         v = normalize(v_);
     }
 
@@ -62,67 +68,67 @@ public:
     const Type& operator()() const { return v; }
     template<typename U> explicit operator U() const { return static_cast<U>(v); }
 
-    VarModInt& operator += (const VarModInt& other) { v = normalize((int64_t)v + (int64_t)other.v); return *this; }
-    VarModInt& operator -= (const VarModInt& other) { v = normalize((int64_t)v - (int64_t)other.v); return *this; }
-    VarModInt& operator *= (const VarModInt& other) { v = normalize((int64_t)v * (int64_t)other.v); return *this; }
-    VarModInt& operator /= (const VarModInt& other) { *this *= VarModInt(inverse(other.v, mod())); return *this; }
+    ModInt& operator += (const ModInt& other) { v = normalize((int64_t)v + (int64_t)other.v); return *this; }
+    ModInt& operator -= (const ModInt& other) { v = normalize((int64_t)v - (int64_t)other.v); return *this; }
+    ModInt& operator *= (const ModInt& other) { v = normalize((int64_t)v * (int64_t)other.v); return *this; }
+    ModInt& operator /= (const ModInt& other) { *this *= ModInt(inverse(other.v, mod())); return *this; }
 
-    template<typename U> VarModInt& operator += (const U& other) { return *this += VarModInt(other); }
-    template<typename U> VarModInt& operator -= (const U& other) { return *this -= VarModInt(other); }
-    template<typename U> VarModInt& operator *= (const U& other) { return *this *= VarModInt(other); }
-    template<typename U> VarModInt& operator /= (const U& other) { return *this /= VarModInt(other); }
+    template<typename U> ModInt& operator += (const U& other) { return *this += ModInt(other); }
+    template<typename U> ModInt& operator -= (const U& other) { return *this -= ModInt(other); }
+    template<typename U> ModInt& operator *= (const U& other) { return *this *= ModInt(other); }
+    template<typename U> ModInt& operator /= (const U& other) { return *this /= ModInt(other); }
 
-    VarModInt& operator ++ () { return *this += 1; }
-    VarModInt& operator -- () { return *this -= 1; }
+    ModInt& operator ++ () { return *this += 1; }
+    ModInt& operator -- () { return *this -= 1; }
 
-    VarModInt operator ++ (int) { VarModInt result(*this); *this += 1; return result; }
-    VarModInt operator -- (int) { VarModInt result(*this); *this -= 1; return result; }
+    ModInt operator ++ (int) { ModInt result(*this); *this += 1; return result; }
+    ModInt operator -- (int) { ModInt result(*this); *this -= 1; return result; }
 
-    VarModInt operator + () const { return VarModInt(v); }
-    VarModInt operator - () const { return VarModInt(-v); }
+    ModInt operator + () const { return ModInt(v); }
+    ModInt operator - () const { return ModInt(-v); }
 
-    friend VarModInt operator + (const VarModInt& a, const VarModInt& b) { return VarModInt(a) += b; }
-    friend VarModInt operator - (const VarModInt& a, const VarModInt& b) { return VarModInt(a) -= b; }
-    friend VarModInt operator * (const VarModInt& a, const VarModInt& b) { return VarModInt(a) *= b; }
-    friend VarModInt operator / (const VarModInt& a, const VarModInt& b) { return VarModInt(a) /= b; }
+    friend ModInt operator + (const ModInt& a, const ModInt& b) { return ModInt(a) += b; }
+    friend ModInt operator - (const ModInt& a, const ModInt& b) { return ModInt(a) -= b; }
+    friend ModInt operator * (const ModInt& a, const ModInt& b) { return ModInt(a) *= b; }
+    friend ModInt operator / (const ModInt& a, const ModInt& b) { return ModInt(a) /= b; }
 
-    template<typename U> friend VarModInt operator + (const VarModInt& a, const U& b) { return VarModInt(a) += b; }
-    template<typename U> friend VarModInt operator - (const VarModInt& a, const U& b) { return VarModInt(a) -= b; }
-    template<typename U> friend VarModInt operator * (const VarModInt& a, const U& b) { return VarModInt(a) *= b; }
-    template<typename U> friend VarModInt operator / (const VarModInt& a, const U& b) { return VarModInt(a) /= b; }
+    template<typename U> friend ModInt operator + (const ModInt& a, const U& b) { return ModInt(a) += b; }
+    template<typename U> friend ModInt operator - (const ModInt& a, const U& b) { return ModInt(a) -= b; }
+    template<typename U> friend ModInt operator * (const ModInt& a, const U& b) { return ModInt(a) *= b; }
+    template<typename U> friend ModInt operator / (const ModInt& a, const U& b) { return ModInt(a) /= b; }
 
-    template<typename U> friend VarModInt operator + (const U& a, const VarModInt& b) { return VarModInt(a) += b; }
-    template<typename U> friend VarModInt operator - (const U& a, const VarModInt& b) { return VarModInt(a) -= b; }
-    template<typename U> friend VarModInt operator * (const U& a, const VarModInt& b) { return VarModInt(a) *= b; }
-    template<typename U> friend VarModInt operator / (const U& a, const VarModInt& b) { return VarModInt(a) /= b; }
+    template<typename U> friend ModInt operator + (const U& a, const ModInt& b) { return ModInt(a) += b; }
+    template<typename U> friend ModInt operator - (const U& a, const ModInt& b) { return ModInt(a) -= b; }
+    template<typename U> friend ModInt operator * (const U& a, const ModInt& b) { return ModInt(a) *= b; }
+    template<typename U> friend ModInt operator / (const U& a, const ModInt& b) { return ModInt(a) /= b; }
 
-    friend bool operator == (const VarModInt& a, const VarModInt& b) { return a.v == b.v; }
-    friend bool operator != (const VarModInt& a, const VarModInt& b) { return !(a == b); }
+    friend bool operator == (const ModInt& a, const ModInt& b) { return a.v == b.v; }
+    friend bool operator != (const ModInt& a, const ModInt& b) { return !(a == b); }
 
-    template<typename U> friend bool operator == (const VarModInt& a, const U& b) { return a.v == VarModInt(b); }
-    template<typename U> friend bool operator == (const U& a, const VarModInt& b) { return VarModInt(a) == b; }
+    template<typename U> friend bool operator == (const ModInt& a, const U& b) { return a.v == ModInt(b); }
+    template<typename U> friend bool operator == (const U& a, const ModInt& b) { return ModInt(a) == b; }
 
-    template<typename U> friend bool operator != (const VarModInt& a, const U& b) { return a.v != VarModInt(b); }
-    template<typename U> friend bool operator != (const U& a, const VarModInt& b) { return VarModInt(a) != b; }
+    template<typename U> friend bool operator != (const ModInt& a, const U& b) { return a.v != ModInt(b); }
+    template<typename U> friend bool operator != (const U& a, const ModInt& b) { return ModInt(a) != b; }
 
-    friend bool operator < (const VarModInt& a, const VarModInt& b) { return a.v < b.v; }
-    template<typename U> friend bool operator < (const VarModInt& a, const U& b) { return a < VarModInt(b); }
-    template<typename U> friend bool operator < (const U& a, const VarModInt& b) { return VarModInt(a) < b; }
+    friend bool operator < (const ModInt& a, const ModInt& b) { return a.v < b.v; }
+    template<typename U> friend bool operator < (const ModInt& a, const U& b) { return a < ModInt(b); }
+    template<typename U> friend bool operator < (const U& a, const ModInt& b) { return ModInt(a) < b; }
 
-    friend bool operator <= (const VarModInt& a, const VarModInt& b) { return a.v <= b.v; }
-    template<typename U> friend bool operator <= (const VarModInt& a, const U& b) { return a <= VarModInt(b); }
-    template<typename U> friend bool operator <= (const U& a, const VarModInt& b) { return VarModInt(a) <= b; }
+    friend bool operator <= (const ModInt& a, const ModInt& b) { return a.v <= b.v; }
+    template<typename U> friend bool operator <= (const ModInt& a, const U& b) { return a <= ModInt(b); }
+    template<typename U> friend bool operator <= (const U& a, const ModInt& b) { return ModInt(a) <= b; }
 
-    friend bool operator > (const VarModInt& a, const VarModInt& b) { return a.v > b.v; }
-    template<typename U> friend bool operator > (const VarModInt& a, const U& b) { return a > VarModInt(b); }
-    template<typename U> friend bool operator > (const U& a, const VarModInt& b) { return VarModInt(a) > b; }
+    friend bool operator > (const ModInt& a, const ModInt& b) { return a.v > b.v; }
+    template<typename U> friend bool operator > (const ModInt& a, const U& b) { return a > ModInt(b); }
+    template<typename U> friend bool operator > (const U& a, const ModInt& b) { return ModInt(a) > b; }
 
-    friend bool operator >= (const VarModInt& a, const VarModInt& b) { return a.v >= b.v; }
-    template<typename U> friend bool operator >= (const VarModInt& a, const U& b) { return a >= VarModInt(b); }
-    template<typename U> friend bool operator >= (const U& a, const VarModInt& b) { return VarModInt(a) >= b; }
+    friend bool operator >= (const ModInt& a, const ModInt& b) { return a.v >= b.v; }
+    template<typename U> friend bool operator >= (const ModInt& a, const U& b) { return a >= ModInt(b); }
+    template<typename U> friend bool operator >= (const U& a, const ModInt& b) { return ModInt(a) >= b; }
 
-    friend std::ostream& operator << (std::ostream& out, const VarModInt& n) { return out << Type(n); }
-    friend std::istream& operator >> (std::istream& in, VarModInt& n) { int64_t v_; in >> v_; n = VarModInt(v_); return in; }
+    friend std::ostream& operator << (std::ostream& out, const ModInt& n) { return out << Type(n); }
+    friend std::istream& operator >> (std::istream& in, ModInt& n) { int64_t v_; in >> v_; n = ModInt(v_); return in; }
 
 private:
     template<typename T>
@@ -151,7 +157,7 @@ T power(const T& base, const U& exp) {
 }
 
 template <typename T>
-std::string to_string(const VarModInt<T>& number) {
+std::string to_string(const ModInt<T>& number) {
     return to_string(number());
 }
 
@@ -160,10 +166,10 @@ struct VarMod { static ModType value; };
 ModType VarMod::value = 1000000007;
 ModType& md = VarMod::value;
 
-using Mint = VarModInt<VarMod>;
+using Mint = ModInt<VarMod>;
 
 // constexpr int md = 1000000007;
-// using Mint = VarModInt<std::integral_constant<decay<decltype(md)>::type, md>>;
+// using Mint = ModInt<std::integral_constant<decay<decltype(md)>::type, md>>;
 
 std::vector<Mint> fact(1, 1);
 std::vector<Mint> inv_fact(1, 1);
@@ -179,6 +185,7 @@ Mint C(int n, int k) {
     return fact[n] * inv_fact[k] * inv_fact[n - k];
 }
 */
+
 
 ll add(__int128 x, __int128 y) {
     return (x + y) % md;
