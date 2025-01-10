@@ -64,13 +64,10 @@ private:
 template<typename T> class SumNode {
 public:
     SumNode() {}
-    template<typename U> SumNode(U v) { // Neutral element
-        sum = v;
-    }
+    template<typename U> SumNode(U v) : sum(v) {}
 public:
     static SumNode merge(const SumNode& a, const SumNode& b);
 public:
-    // NOTE: Initialize with neutral values
     T sum = 0;
 };
 

@@ -5,13 +5,10 @@ using namespace std;
 template<typename T> class Min_Node {
 public:
     Min_Node() {}
-    template<typename U> Min_Node(U v) { // Neutral element
-        min = v;
-    }
+    template<typename U> Min_Node(U v) : min(v) {}
 public:
     static Min_Node merge(const Min_Node& a, const Min_Node& b);
 public:
-    // NOTE: Initialize with neutral values
     T min = numeric_limits<T>::max();
 };
 
