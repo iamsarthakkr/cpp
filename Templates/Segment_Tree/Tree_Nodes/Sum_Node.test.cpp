@@ -74,7 +74,7 @@ public:
     T sum = 0;
 };
 
-string to_string(const SumNode<int>& info) { return "{ " + to_string(info.sum) + " }"; }
+string to_string(const SumNode<int>& node) { return "{ " + to_string(node.sum) + " }"; }
 
 template<typename T> SumNode<T> SumNode<T>::merge(const SumNode<T>& a, const SumNode<T>& b) {
     SumNode res;
