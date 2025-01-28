@@ -3,4 +3,4 @@ make
 
 #Cmake command (will run the CMakeLists file)
 #This will create a make file. Run using the above command. (after going to the build folder)
-cmake -S PATH_TO_CMAKELISTS_FILE -B {PATH_TO_BUILD_FOLDER
+cmake -S PATH_TO_CMAKELISTS_FILE -B {PATH_TO_BUILD_FOLDER}

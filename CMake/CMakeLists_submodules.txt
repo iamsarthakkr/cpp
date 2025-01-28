@@ -1,3 +1,0 @@
-# change library source
-add_library(Adder STATIC source.cpp)
-target_include_directories(Adder PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)

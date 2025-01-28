@@ -3,8 +3,7 @@
 
 # Define variables
 ROOT_DIR=$(pwd)
-BUILD_DIRECTORY=$ROOT_DIR/out/build
-EXECUTIBLE=$BUILD_DIRECTORY/out
+BUILD_DIRECTORY=$ROOT_DIR/build
 
 # Cmake commands
 cmake -S $ROOT_DIR -B $BUILD_DIRECTORY

@@ -1,6 +1,0 @@
-/Users/sarthakkumar/Work/cpp/CmakeTutorial/out/build/CMakeFiles/out.dir
-/Users/sarthakkumar/Work/cpp/CmakeTutorial/out/build/CMakeFiles/edit_cache.dir
-/Users/sarthakkumar/Work/cpp/CmakeTutorial/out/build/CMakeFiles/rebuild_cache.dir
-/Users/sarthakkumar/Work/cpp/CmakeTutorial/out/build/Adder/CMakeFiles/Adder.dir
-/Users/sarthakkumar/Work/cpp/CmakeTutorial/out/build/Adder/CMakeFiles/edit_cache.dir
-/Users/sarthakkumar/Work/cpp/CmakeTutorial/out/build/Adder/CMakeFiles/rebuild_cache.dir
