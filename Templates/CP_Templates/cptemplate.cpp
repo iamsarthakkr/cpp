@@ -50,6 +50,10 @@ void timeIt() {
 template<typename T>
 T gcd(T a, T b) { while (b) { a %= b; swap(a, b); } return a; }
 
+bool islower(char c) { return c >= 'a' && c <= 'z'; }
+bool isupper(char c) { return c >= 'A' && c <= 'Z'; }
+void tolower(char& c) { if(isupper(c)) c = 'a' + (c - 'A'); } 
+void toupper(char& c) { if(islower(c)) c = 'A' + (c - 'a'); }
 template<typename T> bool cmin(T& a, T b) { return b < a ? a = b, 1 : 0; }
 template<typename T> bool cmax(T& a, T b) { return b > a ? a = b, 1 : 0; }
 
