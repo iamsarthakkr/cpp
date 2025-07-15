@@ -10,7 +10,7 @@ public:
     virtual void insert(Type x) = 0;
     virtual Type top() = 0;
     virtual Type remove_min() = 0;
-    virtual bool empty() = 0;
+	virtual bool empty() = 0;
     virtual size_t size() = 0;
 };
 
@@ -85,3 +85,4 @@ private:
     std::vector<Type> m_h;
     Comparator value_compare;
 };
+

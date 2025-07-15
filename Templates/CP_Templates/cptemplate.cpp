@@ -1,7 +1,8 @@
 #include <bits/stdc++.h>
+
 /*
 #include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
+#include <ext/pb_ds/tree_policy.hpp>template
 */
 
 using namespace std;
@@ -25,7 +26,7 @@ typedef vector<pll> vpll;
 #define fi first
 #define se second
 #define forn(i, n) for(int i = 0; i < n; i++)
-#define forv(x, a) for(auto& x: a)
+#define forv(x, a) for(auto &x : a)
 #define ford(i, n) for(int i = n - 1; i >= 0; i--)
 #define for1(i, n) for(int i = 1; i <= n; i++)
 #define forr(i, l, r) for(int i = l; i <= r; i++)
@@ -35,54 +36,55 @@ typedef vector<pll> vpll;
 #define len(a) (int)(a).size()
 #define sq(x) (x) * (x)
 
-void timeIt() {
-	#ifdef SARTHAK_LOCAL
-        cerr << "Total Time: " << (double)clock() * 1e3 / CLOCKS_PER_SEC << "ms" << '\n';
-	#endif
-}
-
 #ifdef SARTHAK_LOCAL
 #include "/Users/sarthakkumar/work/Cpp/Templates/CP_Templates/debug.cpp"
-#else 
+#else
 #define debug(...) 69
 #endif
 
-template<typename T>
-T gcd(T a, T b) { while (b) { a %= b; swap(a, b); } return a; }
+template <typename T> T gcd(T a, T b) {
+    while(b) {
+        a %= b;
+        swap(a, b);
+    }
+    return a;
+}
 
 bool islower(char c) { return c >= 'a' && c <= 'z'; }
 bool isupper(char c) { return c >= 'A' && c <= 'Z'; }
-void tolower(char& c) { if(isupper(c)) c = 'a' + (c - 'A'); } 
-void toupper(char& c) { if(islower(c)) c = 'A' + (c - 'a'); }
-template<typename T> bool cmin(T& a, T b) { return b < a ? a = b, 1 : 0; }
-template<typename T> bool cmax(T& a, T b) { return b > a ? a = b, 1 : 0; }
+void tolower(char &c) { c = isupper(c) ? c = 'a' + (c - 'A') : c; }
+void toupper(char &c) { c = islower(c) ? c = 'A' + (c - 'a') : c; }
+template <typename T> bool cmin(T &a, T b) { return b < a ? a = b, 1 : 0; }
+template <typename T> bool cmax(T &a, T b) { return b > a ? a = b, 1 : 0; }
 
 void Main(int tc) {
-
 }
 
-#define MULTI	// comment for single test
+#define MULTI // comment for single test
 
 int main() {
-	ios::sync_with_stdio(0);cin.tie(NULL); cout << setprecision(12) << fixed;
-    
-	int tt = 1;
-	#ifdef MULTI 
-		cin >> tt;
-	#endif
+    ios::sync_with_stdio(0), cin.tie(NULL), cout << setprecision(12) << fixed;
+
+    int tt = 1;
+#ifdef MULTI
+    cin >> tt;
+#endif
 
     for(int t = 1; t <= tt; t++) {
-        #ifdef SARTHAK_LOCAL
-            cerr << "Test Case: #" << t << '\n'; cerr << "---------------" << '\n';
-        #endif
+#ifdef SARTHAK_LOCAL
+        cerr << "Test Case: #" << t << '\n';
+        cerr << "---------------" << '\n';
+#endif
 
-		Main(t);
-        
-        #ifdef SARTHAK_LOCAL
-            cerr << "---------------" << '\n';
-        #endif
-	}
+        Main(t);
 
-	timeIt();
-	return 0;
+#ifdef SARTHAK_LOCAL
+        cerr << "---------------" << '\n';
+#endif
+    }
+
+#ifdef SARTHAK_LOCAL
+    cerr << "Total Time: " << (double)clock() * 1e3 / CLOCKS_PER_SEC << "ms" << '\n';
+#endif
+    return 0;
 }

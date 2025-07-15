@@ -1,11 +1,11 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
 
-template<typename T, typename T_Iterable> 
-vector<pair<T, int>> run_length_encoding(const T_Iterable& a) {
+template <typename T, typename T_Iterable>
+vector<pair<T, int>> run_length_encoding(const T_Iterable &a) {
     vector<pair<T, int>> res;
     int n = (int)a.size();
-   
+
     int i = 0;
     while(i < n) {
         int j = i;
