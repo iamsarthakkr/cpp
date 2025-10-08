@@ -1,55 +1,131 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-template<typename Node> class SegtreeImpl {
-public:
-    // Initialize with empty values
-    SegtreeImpl(int n) { m_size = 1; while(m_size < n) m_size *= 2; m_tree.assign(2 * m_size, Node()); }
-    // initialize with list of values
-    template<typename T = Node> SegtreeImpl(vector<T>& info) : SegtreeImpl((int)info.size()) { build<T>(info, 0, 0, m_size); }
-    // set value for a node
-    void set(int i, const Node& v) { setImpl(i, v, 0, 0, m_size); }
-    // get value of node i
-    Node get(int i) { return getImpl(i, i + 1, 0, 0, m_size); }
-    // get result for range l ... r - 1
-    Node get(int l, int r) { return getImpl(l, r, 0, 0, m_size); }
+template <typename Node> class SegtreeImpl {
+  public:
+    explicit SegtreeImpl(int n) { init(n); }
+    explicit SegtreeImpl(const vector<Node> &info) : SegtreeImpl((int)info.size()) { build(1, 0, m_size, info); }
+    template <typename T>
+    explicit SegtreeImpl(const vector<T> &info) : SegtreeImpl((int)info.size()) { build(1, 0, m_size, info); }
 
-private:
-    // set implementation
-    void setImpl(int i, const Node& v, int node, int lx, int rx) {
-        if(rx - lx == 1) { m_tree[node] = v; return; } // leaf node
-        int m = (lx + rx) >> 1;
-        if(i < m) { setImpl(i, v, 2 * node + 1, lx, m); }
-        else      { setImpl(i, v, 2 * node + 2, m, rx); }
-        recalc(node, lx, rx);
-    }
-    // calc operation
-    Node getImpl(int l, int r, int node, int lx, int rx) {
-        if(rx <= l || r <= lx) { return Node(); } // neutral element
-        if(l <= lx && rx <= r) { return m_tree[node]; } // covered
+    const int size() const { return m_origSize; }
 
-        int m = (lx + rx) >> 1;
-        auto left = getImpl(l, r, 2 * node + 1, lx, m);
-        auto right = getImpl(l, r, 2 * node + 2, m, rx);
-        return Node::merge(left, right);
-    }
-private:
-    template<typename T = Node> void build(const vector<T>& info, int node, int lx, int rx) {
-        if(rx - lx == 1) { // leaf node
-            if(lx < (int) info.size()) { 
-                m_tree[node] = info[lx]; 
-            }
+    void set(int i, const Node &v) { setImpl(1, 0, m_size, i, v); }
+    Node calc(int l, int r) { return calcImpl(1, 0, m_size, l, r); }
+    template <typename F> int maxRight(int l, F pred) {
+        Node acc;
+        assert(pred(acc));
+        auto res = maxRightImpl(1, 0, m_size, l, pred, acc);
+        return std::min(m_origSize, res);
+    };
+    template <typename F> int minLeft(int r, F pred) {
+        Node acc;
+        assert(pred(acc));
+        auto res = minLeftImpl(1, 0, m_size, r, pred, acc);
+        return std::max(0, res);
+    };
+
+  private:
+    void setImpl(int node, int lx, int rx, int i, const Node &v) {
+        if(rx - lx == 1) {
+            m_tree[node] = v;
             return;
         }
-        int m = (lx + rx) >> 1; build(info, 2 * node + 1, lx, m); build(info, 2 * node + 2, m, rx); recalc(node, lx, rx);
+        int m = (lx + rx) >> 1;
+        if(i < m)
+            setImpl(node << 1, lx, m, i, v);
+        else
+            setImpl(node << 1 | 1, m, rx, i, v);
+
+        recalc(node, lx, rx);
     }
-private:
-    // recalculate value for a node
+
+    Node calcImpl(int node, int lx, int rx, int l, int r) {
+        if(rx <= l || r <= lx) return Node();
+        if(l <= lx && rx <= r) return m_tree[node];
+        int m = (lx + rx) >> 1;
+        auto s1 = calcImpl(node << 1, lx, m, l, r);
+        auto s2 = calcImpl(node << 1 | 1, m, rx, l, r);
+        return Node::merge(s1, s2);
+    }
+
+    template <typename F> int maxRightImpl(int node, int lx, int rx, int l, F &pred, Node &acc) {
+        if(rx <= l) return l;
+        if(l <= lx) {
+            Node res = Node::merge(acc, m_tree[node]);
+            if(pred(res)) {
+                acc = std::move(res);
+                return rx;
+            }
+            if(rx - lx == 1) return lx;
+        }
+        if(rx - lx == 1) return l;
+
+        int m = (lx + rx) >> 1;
+
+        int r1 = maxRightImpl(node << 1, lx, m, l, pred, acc);
+        if(r1 < m) return r1;
+        return maxRightImpl(node << 1 | 1, m, rx, l, pred, acc);
+    }
+    template <typename F> int minLeftImpl(int node, int lx, int rx, int r, F &pred, Node &acc) {
+        if(r <= lx) return r;
+        if(rx <= r) {
+            Node res = Node::merge(m_tree[node], acc);
+            if(pred(res)) {
+                acc = std::move(res);
+                return lx;
+            }
+            if(rx - lx == 1) return rx;
+        }
+        if(rx - lx == 1) return r;
+
+        int m = (lx + rx) >> 1;
+
+        int l1 = minLeftImpl(node << 1 | 1, m, rx, r, pred, acc);
+        if(l1 > m) return l1;
+        return minLeftImpl(node << 1, lx, m, r, pred, acc);
+    }
+
+  private:
     void recalc(int node, int lx, int rx) {
-        if(rx - lx == 1) { return; } // leaf node
-        m_tree[node] = Node::merge(m_tree[2 * node + 1], m_tree[2 * node + 2]);
+        if(rx - lx == 1) return;
+        m_tree[node] = Node::merge(m_tree[node << 1], m_tree[node << 1 | 1]);
     }
-private:
+
+    void init(int n) {
+        m_origSize = n;
+        m_size = 1;
+        while(m_size < n) m_size <<= 1;
+        m_tree.resize(2 * m_size, Node());
+    }
+
+    template <typename T>
+    void build(int node, int lx, int rx, const vector<T> &arr) {
+        if(rx - lx == 1) {
+            if(lx < (int)arr.size()) m_tree[node] = arr[lx];
+            return;
+        }
+        int m = (lx + rx) >> 1;
+        build(node << 1, lx, m, arr);
+        build(node << 1 | 1, m, rx, arr);
+
+        recalc(node, lx, rx);
+    }
+
+  private:
     int m_size;
+    int m_origSize;
     vector<Node> m_tree;
 };
+
+struct Node {
+
+    Node() {}
+
+    static Node merge(const Node &a, const Node &b) {
+        Node res;
+
+        return res;
+    }
+};
+using Segtree = SegtreeImpl<Node>;
