@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+
 using namespace std;
 
 template <typename Node> class SegtreeImpl {
@@ -8,21 +9,27 @@ template <typename Node> class SegtreeImpl {
     template <typename T>
     explicit SegtreeImpl(const vector<T> &info) : SegtreeImpl((int)info.size()) { build(1, 0, m_size, info); }
 
-    const int size() const { return m_origSize; }
+    int size() const { return m_origSize; }
 
     void set(int i, const Node &v) { setImpl(1, 0, m_size, i, v); }
+
+    Node get(int i) { return getImpl(i); }
+
+    Node get() const { return m_tree[1]; }
+
     Node calc(int l, int r) { return calcImpl(1, 0, m_size, l, r); }
-    template <typename F> int maxRight(int l, F pred) {
-        Node acc;
+
+    template <class F>
+    void update(int i, F fn) { set(i, fn(get(i))); }
+
+    template <typename F> int maxRight(int l, F pred, Node acc = Node::id()) {
         assert(pred(acc));
-        auto res = maxRightImpl(1, 0, m_size, l, pred, acc);
-        return std::min(m_origSize, res);
+        return std::min(m_origSize, maxRightImpl(1, 0, m_size, l, pred, acc));
     };
-    template <typename F> int minLeft(int r, F pred) {
-        Node acc;
+
+    template <typename F> int minLeft(int r, F pred, Node acc = Node::id()) {
         assert(pred(acc));
-        auto res = minLeftImpl(1, 0, m_size, r, pred, acc);
-        return std::max(0, res);
+        return std::max(0, minLeftImpl(1, 0, m_size, r, pred, acc));
     };
 
   private:
@@ -37,11 +44,23 @@ template <typename Node> class SegtreeImpl {
         else
             setImpl(node << 1 | 1, m, rx, i, v);
 
-        recalc(node, lx, rx);
+        recalc(node);
+    }
+
+    Node getImpl(int i) {
+        int node = 1, lx = 0, rx = m_size;
+        while(rx - lx > 1) {
+            int m = (lx + rx) >> 1;
+            if(i < m)
+                rx = m, node = node << 1;
+            else
+                lx = m, node = node << 1 | 1;
+        }
+        return m_tree[node];
     }
 
     Node calcImpl(int node, int lx, int rx, int l, int r) {
-        if(rx <= l || r <= lx) return Node();
+        if(rx <= l || r <= lx) return Node::id();
         if(l <= lx && rx <= r) return m_tree[node];
         int m = (lx + rx) >> 1;
         auto s1 = calcImpl(node << 1, lx, m, l, r);
@@ -87,8 +106,7 @@ template <typename Node> class SegtreeImpl {
     }
 
   private:
-    void recalc(int node, int lx, int rx) {
-        if(rx - lx == 1) return;
+    void recalc(int node) {
         m_tree[node] = Node::merge(m_tree[node << 1], m_tree[node << 1 | 1]);
     }
 
@@ -96,7 +114,7 @@ template <typename Node> class SegtreeImpl {
         m_origSize = n;
         m_size = 1;
         while(m_size < n) m_size <<= 1;
-        m_tree.resize(2 * m_size, Node());
+        m_tree.resize(2 * m_size, Node::id());
     }
 
     template <typename T>
@@ -109,7 +127,7 @@ template <typename Node> class SegtreeImpl {
         build(node << 1, lx, m, arr);
         build(node << 1 | 1, m, rx, arr);
 
-        recalc(node, lx, rx);
+        recalc(node);
     }
 
   private:
@@ -117,15 +135,3 @@ template <typename Node> class SegtreeImpl {
     int m_origSize;
     vector<Node> m_tree;
 };
-
-struct Node {
-
-    Node() {}
-
-    static Node merge(const Node &a, const Node &b) {
-        Node res;
-
-        return res;
-    }
-};
-using Segtree = SegtreeImpl<Node>;
