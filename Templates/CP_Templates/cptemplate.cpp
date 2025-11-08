@@ -52,8 +52,8 @@ template <typename T> T gcd(T a, T b) {
 
 bool islower(char c) { return c >= 'a' && c <= 'z'; }
 bool isupper(char c) { return c >= 'A' && c <= 'Z'; }
-void tolower(char &c) { c = isupper(c) ? c = 'a' + (c - 'A') : c; }
-void toupper(char &c) { c = islower(c) ? c = 'A' + (c - 'a') : c; }
+void tolower(char &c) { c = (c == isupper(c) ? 'a' + (c - 'A') : c); }
+void toupper(char &c) { c = (c == islower(c) ? 'A' + (c - 'a') : c); }
 template <typename T> bool cmin(T &a, T b) { return b < a ? a = b, 1 : 0; }
 template <typename T> bool cmax(T &a, T b) { return b > a ? a = b, 1 : 0; }
 
